@@ -1,10 +1,72 @@
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 body {
+  max-width: 800px;
+  position: relative;
+  margin: auto;
+  padding-top: 2rem;
+  padding-bottom: 6rem;
+  min-height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
   background-color: black;
   color: white;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ffffff;
+}
+
+#matrix {
+  margin: auto;
+}
+
+.completed {
+  color: gold !important;
+  /*color: #00d400 !important;*/
+}
+
+.marked {
+  color: #458345 !important;
+}
+
+.abandoned {
+  color: #77a277;
 }
 
 td {
   font-size: 3ex;
   width: 4ex;
   height: 4ex;
+}
+
+#authors {
+  color: #bbbbbb;
+  font-weight: 200;
+  font-size: 0.75em;
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+#artist {
+  float: left;
+  text-align: left;
+}
+#developer {
+  float: right;
+  text-align: right;
 }
