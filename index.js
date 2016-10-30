@@ -4,15 +4,12 @@ const dirs = {
   'left'       : [ 0,-1],
   'right'      : [ 0, 1],
   'up'         : [-1, 0],
-  'dow'        : [ 1, 0],
+  'down'       : [ 1, 0],
   'up-left'    : [-1,-1],
   'up-right'   : [-1, 1],
   'down-left'  : [ 1,-1],
   'down-right' : [ 1, 1]
 };
-const foundColor = 'green';
-const completeColor = 'gold';
-const normalColor = 'white';
 
 let accomplished = 0;
 let tried = 0;
@@ -26,11 +23,11 @@ function initialMatrix() {
   return matrix;
 }
 
-function indexId(r, c) {
-  return '#' + _.padStart(r, 2, '0') + '_' + _.padStart(c, 2, '0');
+function index$(r, c) {
+  return $('#' + _.padStart(r, 2, '0') + '_' + _.padStart(c, 2, '0'));
 }
 
-function showCounters(accomplished, tried) {
+function showCounters() {
   $('#tried').text(tried);
   $('#accomplished').text(accomplished);
 }
@@ -38,82 +35,103 @@ function showCounters(accomplished, tried) {
 function showMatrix(matrix) {
   _.forEach(matrix, (word, r) => {
     _.forEach(word, (letter, c) => {
-      var letterTD = $(indexId(r, c));
+      const letterTD = index$(r, c);
       letterTD.html(letter);
     });
   });
 }
 
-function markFound(matrix, found, cb, index) {
-  const time = 01000;
+function markFound(found, cb, descr) {
+  const time = 1000;
 
-  if (index === undefined) {
-    markFound(matrix, found, cb, 0);
-  } else if (_.some(_.map(found, `[${index}]`))) {
-    setTimeout(function() {
-      _.forEach(found, (path) => {
-        const pos = _.get(path, `[${index}]`);
-        if (pos) {
-          const index = indexId(...pos);
-          $(indexId(...pos)).css({ color: foundColor });
-        }
-      });
-      markFound(matrix, found, cb, index + 1);
-    }, time);
-  } else {
-    tried += 1;
-    if (index == size) {
-      console.log(_.map(matrix, (row) => row.join(' ')).join('\n'));
-      // found some words! (at least one)
-      accomplished += 1;
-    }
-    showCounters(accomplished, tried);
-    setTimeout(cb, time);
+  function indexClass(index) {
+    return `path_${index}`
   }
+
+  function go(descr) {
+    setTimeout(function() {
+      if (! _.some(descr, ({rest}) => _.size(rest))) {
+        // No more letters to mark
+
+        let completed = false;
+        _.forEach(descr, ({index, past}) => {
+          if (_.size(past) === size) {
+            completed = true;
+            // mark all completed ones
+            $('.'+indexClass(index)).removeClass().addClass('completed');
+          } else {
+            $('.'+indexClass(index)).removeClass().addClass('abandoned');
+          }
+        });
+
+        tried += 1;
+        if (completed) {
+          accomplished += 1;
+        }
+        return setTimeout(cb, time);
+      }
+
+      function markOrAbandon({toMark, toAbandon}, {index, rest}) {
+        if (_.isEmpty(rest)) {
+          toAbandon.push(index);
+        } else {
+          index$(..._.head(rest)).addClass(indexClass(index));
+          toMark.push(index);
+        }
+
+        return {toMark, toAbandon};
+      }
+      const {toMark, toAbandon} = _.reduce(descr, markOrAbandon, {toMark: [], toAbandon: []});
+
+      _.forEach(toAbandon, (index) => {
+        $('.'+indexClass(index)).removeClass('marked').addClass('abandoned');
+      });
+
+      _.forEach(toMark, (index) => {
+        $('.'+indexClass(index)).addClass('marked');
+      });
+
+      return go(_.map(descr, ({index, rest, past}) => {
+        if (_.isEmpty(rest)) {
+          return {index, rest, past};
+        } else {
+          const [head, ...restTail] = rest;
+          return {index, rest: restTail, past: _.concat(past, [head])};
+        }
+      }));
+    }, time);
+  }
+
+  return go(_.map(found, (rest, index) => ({ index, rest, past: [] })));
 }
 
 function clearFound(matrix, found, cb) {
   _.forEach(found, (path) => {
-    _.forEach(path, (pos) => {
-      $(indexId(...pos)).css({ color: normalColor });
+    _.forEach(path, ([r, c]) => {
+      index$(r, c).removeClass();
     });
   });
 }
 
 // Shuffle all letters
-function shuffle(matrix) {
-  let letters = [];
-  _.forEach(matrix, (word) => {
-    letters = _.concat(letters, word);
-  });
-
-  letters = _.shuffle(letters);
-
-  _.times(size, (i) => {
-    matrix[i] = _.take(letters, size);
-    letters = _.drop(letters, size);
-  });
-
-  return matrix;
+function shuffleAll(matrix) {
+  return _.chunk(_.shuffle(_.flatten(matrix)), size);
 }
 
 // Shuffle per line
-function shuffle$(matrix) {
-  _.times(size, (i) => {
-    matrix[i] = _.shuffle(matrix[i]);
-  });
-
-  return matrix;
+function shuffleLines(matrix) {
+  return _.map(matrix, _.flowRight(_.shuffle, _.cloneDeep));
 }
 
 function find(matrix) {
   let paths = [];
 
-  let [startL, ...restL] = CREOENTODOS;
+  const startL = _.head(CREOENTODOS);
+  const restL = _.tail(CREOENTODOS);
 
   _.forEach(matrix, (word, r) => {
     _.forEach(word, (letter, c) => {
-      if (startL == letter) {
+      if (startL === letter) {
         paths.push([ [r,c] ]);
       }
     });
@@ -122,11 +140,8 @@ function find(matrix) {
   let size = 0;
   function go(paths, letter) {
     size = size + 1;
-    console.log(letter);
     function go(path, index) {
-      console.log(path);
       if (_.size(path) < size) {
-        console.log('size');
         return [ path ];
       }
 
@@ -141,10 +156,9 @@ function find(matrix) {
             return _.isEqual(penultimateP, newP) ? null : newP;
           })
         ),
-        ([r,c]) => _.get(matrix, '[' + r + '][' + c + ']') == letter
+        ([r,c]) => _.get(matrix, `[${r}][${c}]`) === letter
       );
 
-      console.log('pss:', poss);
       if (_.isEmpty(poss)) {
         // No new letter found
         return [ path ];
@@ -157,15 +171,15 @@ function find(matrix) {
     return _.flatMap(paths, go);
   }
 
-  const all = _.reduce(restL, go, paths);
+  const all = _.orderBy(_.reduce(restL, go, paths), _.size, 'desc');
   return all;
-  return _.take(_.sortBy(all, (x) => - _.size(x)), 2);
+  return _.take(all, 3);
 }
 
 function shuffledShownMatrix(matrix, times, cb) {
-  const time = 0200;
+  const time = 100;
 
-  shuffle(matrix);
+  matrix = shuffleAll(matrix);
   showMatrix(matrix);
   if (times <= 1) {
     cb(matrix);
@@ -176,13 +190,18 @@ function shuffledShownMatrix(matrix, times, cb) {
   }
 }
 
+function logMatrix(matrix) {
+  console.log(_.map(matrix, (row) => row.join(' ')).join('\n'));
+}
+
 function workIt() {
-  const time = 02000;
+  const time = 2000;
 
   setTimeout(function() {
-    shuffledShownMatrix(initialMatrix(), 3, function(matrix) {
+    shuffledShownMatrix(initialMatrix(), 0, function(matrix) {
       const found = find(matrix);
-      markFound(matrix, found, function() {
+      markFound(found, function(letters) {
+        showCounters();
         clearFound(matrix, found);
         workIt();
       });
@@ -192,7 +211,7 @@ function workIt() {
 
 $(document).ready(function() {
   const matrix = initialMatrix();
-  showCounters(accomplished, tried);
+  showCounters();
   showMatrix(matrix);
   workIt();
 });
