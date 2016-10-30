@@ -45,7 +45,7 @@ function markFound(found, cb, descr) {
   const time = 1000;
 
   function indexClass(index) {
-    return `path_${index}`
+    return `.path_${index}`
   }
 
   function go(descr) {
@@ -58,9 +58,9 @@ function markFound(found, cb, descr) {
           if (_.size(past) === size) {
             completed = true;
             // mark all completed ones
-            $('.'+indexClass(index)).removeClass().addClass('completed');
+            $(indexClass(index)).removeClass().addClass('completed');
           } else {
-            $('.'+indexClass(index)).removeClass().addClass('abandoned');
+            $(indexClass(index)).removeClass().addClass('abandoned');
           }
         });
 
@@ -75,7 +75,8 @@ function markFound(found, cb, descr) {
         if (_.isEmpty(rest)) {
           toAbandon.push(index);
         } else {
-          index$(..._.head(rest)).addClass(indexClass(index));
+          const clss = _.drop(indexClass(index), 1).join(''); // drop the dot (.)
+          index$(..._.head(rest)).addClass(clss);
           toMark.push(index);
         }
 
@@ -84,11 +85,11 @@ function markFound(found, cb, descr) {
       const {toMark, toAbandon} = _.reduce(descr, markOrAbandon, {toMark: [], toAbandon: []});
 
       _.forEach(toAbandon, (index) => {
-        $('.'+indexClass(index)).removeClass('marked').addClass('abandoned');
+        $(indexClass(index)).removeClass('marked').addClass('abandoned');
       });
 
       _.forEach(toMark, (index) => {
-        $('.'+indexClass(index)).addClass('marked');
+        $(indexClass(index)).addClass('marked');
       });
 
       return go(_.map(descr, ({index, rest, past}) => {
