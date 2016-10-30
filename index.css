@@ -1,0 +1,10 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+td {
+  font-size: 3ex;
+  width: 4ex;
+  height: 4ex;
+}
