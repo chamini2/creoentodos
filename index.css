@@ -34,7 +34,7 @@ a:hover {
   margin: auto;
 }
 
-@keyframes example {
+@keyframes marked {
   0% {
     color: #7aff84;
   }
@@ -46,13 +46,26 @@ a:hover {
   }
 }
 
+@keyframes completed {
+  0% {
+    color: #e4c000;
+  }
+  50% {
+    color: #fffe81;
+  }
+  100% {
+    color: #e4c000;
+  }
+}
+
 .completed {
-  color: #ffd700 !important;
+  animation-name: completed;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
 }
 
 .marked {
-  color: #458345 !important;
-  animation-name: example;
+  animation-name: marked;
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
