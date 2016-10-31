@@ -24,7 +24,7 @@ function initialMatrix() {
 }
 
 function index$(r, c) {
-  return $('#' + _.padStart(r, 2, '0') + '_' + _.padStart(c, 2, '0'));
+  return $(`#${_.padStart(r, 2, '0')}_${_.padStart(c, 2, '0')}`);
 }
 
 function showCounters() {
@@ -48,7 +48,7 @@ function markFound(found, cb, descr) {
     return `path_${index}`
   }
   function clss$(clss) {
-    return $('.'+clss);
+    return $(`.${clss}`);
   }
 
   let times = 0;
@@ -59,7 +59,7 @@ function markFound(found, cb, descr) {
       const newDescr = _(descr).filter('rest[0]')
       .map(({index, rest: [[r,c], ...rest]}) => {
         const clss = indexClass(index);
-        index$(r, c).addClass(clss + ' passed');
+        index$(r, c).addClass(`${clss} passed`);
         clss$(clss).addClass('marked');
         return {index, rest};
       })
