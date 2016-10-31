@@ -42,7 +42,7 @@ function showMatrix(matrix) {
 }
 
 function markFound(found, cb, descr) {
-  const time = 500;
+  const time = 1000;
 
   function indexClass(index) {
     return `path_${index}`
@@ -72,11 +72,12 @@ function markFound(found, cb, descr) {
         if (times === size) {
           // Marked the word!
           accomplished += 1;
+          $('#matrix td').addClass('non-completed');
           _.forEach(descr, ({index}) => {
             // mark all completed ones
-            clss$(indexClass(index)).removeClass('passed marked').addClass('completed');
+            clss$(indexClass(index)).removeClass('non-completed').addClass('completed');
           });
-          return setTimeout(cb, 2000); // Show it longer
+          return setTimeout(cb, 3000); // Show it longer
         } else {
           return cb();
         }
@@ -91,7 +92,7 @@ function markFound(found, cb, descr) {
   return go(_.map(found, (rest, index) => ({index, rest})));
 }
 
-function clearMatrix(matrix, found, cb) {
+function clearMatrix() {
   _.times(size, (r) => {
     _.times(size, (c) => {
       index$(r, c).removeClass();
@@ -160,7 +161,7 @@ function find(matrix) {
 }
 
 function shuffledShownMatrix(matrix, times, cb) {
-  const time = 100;
+  const time = 200;
 
   showMatrix(matrix);
   if (times < 1) {
@@ -178,23 +179,19 @@ function logMatrix(matrix) {
 }
 
 function workIt(matrix) {
-  const time = 1000;
-
-  setTimeout(function() {
-    clearMatrix(matrix);
-    shuffledShownMatrix(matrix, 1, function(matrix) {
-      const found = find(matrix);
-      markFound(found, function(letters) {
-        showCounters();
-        workIt(matrix);
-      });
+  clearMatrix();
+  shuffledShownMatrix(matrix, 5, function(matrix) {
+    const found = find(matrix);
+    markFound(found, function(letters) {
+      showCounters();
+      workIt(matrix);
     });
-  }, time);
+  });
 }
 
 $(document).ready(function() {
   const matrix = initialMatrix();
   showCounters();
   showMatrix(matrix);
-  workIt(matrix);
+  setTimeout(() => workIt(matrix), 1000);
 });

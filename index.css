@@ -46,20 +46,20 @@ a:hover {
   }
 }
 
-@keyframes completed {
+@keyframes non-completed {
   0% {
-    color: #e4c000;
+    color: #ffffff;
   }
   50% {
-    color: #fffe81;
+    color: #000000;
   }
   100% {
-    color: #e4c000;
+    color: #ffffff;
   }
 }
 
-.completed {
-  animation-name: completed;
+.non-completed {
+  animation-name: non-completed;
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
@@ -68,6 +68,7 @@ a:hover {
   animation-name: marked;
   animation-duration: 4s;
   animation-iteration-count: infinite;
+  text-decoration: underline;
 }
 
 .passed {
