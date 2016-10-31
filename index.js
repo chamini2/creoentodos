@@ -36,7 +36,7 @@ function showMatrix(matrix) {
   _.forEach(matrix, (word, r) => {
     _.forEach(word, (letter, c) => {
       const letterTD = index$(r, c);
-      letterTD.html(letter);
+      letterTD.text(letter);
     });
   });
 }
@@ -45,65 +45,47 @@ function markFound(found, cb, descr) {
   const time = 1000;
 
   function indexClass(index) {
-    return `.path_${index}`
+    return `path_${index}`
+  }
+  function clss$(clss) {
+    return $('.'+clss);
   }
 
+  let times = 0;
   function go(descr) {
+    times += 1;
     setTimeout(function() {
-      if (! _.some(descr, ({rest}) => _.size(rest))) {
+      clss$('marked').removeClass('marked');
+
+      const newDescr = _(descr).filter('rest[0]')
+      .map(({index, rest: [[r,c], ...rest]}) => {
+        const clss = indexClass(index);
+        index$(r, c).addClass(clss + ' passed');
+        clss$(clss).addClass('marked');
+        return {index, rest};
+      })
+      .value();
+
+      if (_.isEmpty(newDescr)) {
         // No more letters to mark
 
-        let completed = false;
-        _.forEach(descr, ({index, past}) => {
-          if (_.size(past) === size) {
-            completed = true;
+        tried += 1;
+        if (times === size) {
+          accomplished += 1;
+          _.forEach(descr, ({index}) => {
             // mark all completed ones
             $(indexClass(index)).removeClass().addClass('completed');
-          } else {
-            $(indexClass(index)).removeClass().addClass('abandoned');
-          }
-        });
-
-        tried += 1;
-        if (completed) {
-          accomplished += 1;
+          });
         }
+
         return setTimeout(cb, time);
+      } else {
+        return go(newDescr);
       }
-
-      function markOrAbandon({toMark, toAbandon}, {index, rest}) {
-        if (_.isEmpty(rest)) {
-          toAbandon.push(index);
-        } else {
-          const clss = _.drop(indexClass(index), 1).join(''); // drop the dot (.)
-          index$(..._.head(rest)).addClass(clss);
-          toMark.push(index);
-        }
-
-        return {toMark, toAbandon};
-      }
-      const {toMark, toAbandon} = _.reduce(descr, markOrAbandon, {toMark: [], toAbandon: []});
-
-      _.forEach(toAbandon, (index) => {
-        $(indexClass(index)).removeClass('marked').addClass('abandoned');
-      });
-
-      _.forEach(toMark, (index) => {
-        $(indexClass(index)).addClass('marked');
-      });
-
-      return go(_.map(descr, ({index, rest, past}) => {
-        if (_.isEmpty(rest)) {
-          return {index, rest, past};
-        } else {
-          const [head, ...restTail] = rest;
-          return {index, rest: restTail, past: _.concat(past, [head])};
-        }
-      }));
     }, time);
   }
 
-  return go(_.map(found, (rest, index) => ({ index, rest, past: [] })));
+  return go(_.map(found, (rest, index) => ({index, rest})));
 }
 
 function clearFound(matrix, found, cb) {
@@ -141,6 +123,7 @@ function find(matrix) {
   let size = 0;
   function go(paths, letter) {
     size = size + 1;
+
     function go(path, index) {
       if (_.size(path) < size) {
         return [ path ];
@@ -150,41 +133,37 @@ function find(matrix) {
       const penultimateP = _.nth(path, -2);
 
       // Valid positions only
-      const poss = _.filter(
-        _.compact(
-          _.map(dirs, (dir) => {
-            const newP = _.zipWith(lastP, dir, (l,m) => l+m);
-            return _.isEqual(penultimateP, newP) ? null : newP;
-          })
-        ),
-        ([r,c]) => _.get(matrix, `[${r}][${c}]`) === letter
-      );
+      const poss = _(dirs).map((dir) => {
+        const newP = _.zipWith(lastP, dir, (l,m) => l+m);
+        return _.isEqual(penultimateP, newP) ? null : newP;
+      })
+      .compact()
+      .filter(([r,c]) => _.get(matrix, `[${r}][${c}]`) === letter)
+      .value();
 
       if (_.isEmpty(poss)) {
         // No new letter found
         return [ path ];
       } else {
         // Some new letters found (1 or more)
-        return _.map(poss, (pos) => _.concat(path, [pos]));
+        return _(poss).map((pos) => _.concat(path, [ pos ])).value();
       }
     }
 
     return _.flatMap(paths, go);
   }
 
-  const all = _.orderBy(_.reduce(restL, go, paths), _.size, 'desc');
-  return all;
-  return _.take(all, 3);
+  return _.reduce(restL, go, paths);
 }
 
 function shuffledShownMatrix(matrix, times, cb) {
-  const time = 100;
+  const time = 300;
 
-  matrix = shuffleAll(matrix);
   showMatrix(matrix);
-  if (times <= 1) {
+  if (times < 1) {
     cb(matrix);
   } else {
+    matrix = shuffleAll(matrix);
     setTimeout(function () {
       shuffledShownMatrix(matrix, times-1, cb);
     }, time);
@@ -199,7 +178,7 @@ function workIt() {
   const time = 2000;
 
   setTimeout(function() {
-    shuffledShownMatrix(initialMatrix(), 0, function(matrix) {
+    shuffledShownMatrix(initialMatrix(), 3, function(matrix) {
       const found = find(matrix);
       markFound(found, function(letters) {
         showCounters();

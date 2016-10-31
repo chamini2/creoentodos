@@ -34,17 +34,31 @@ a:hover {
   margin: auto;
 }
 
+@keyframes example {
+  0% {
+    color: #7aff84;
+  }
+  50% {
+    color: #00cce0;
+  }
+  100% {
+    color: #7aff84;
+  }
+}
+
 .completed {
-  color: gold !important;
-  /*color: #00d400 !important;*/
+  color: #ffd700 !important;
 }
 
 .marked {
   color: #458345 !important;
+  animation-name: example;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
 }
 
-.abandoned {
-  color: #77a277;
+.passed {
+  color: #9eff9e;
 }
 
 td {
