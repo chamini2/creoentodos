@@ -42,7 +42,7 @@ function showMatrix(matrix) {
 }
 
 function markFound(found, cb, descr) {
-  const time = 1000;
+  const time = 500;
 
   function indexClass(index) {
     return `path_${index}`
@@ -53,7 +53,6 @@ function markFound(found, cb, descr) {
 
   let times = 0;
   function go(descr) {
-    times += 1;
     setTimeout(function() {
       clss$('marked').removeClass('marked');
 
@@ -71,15 +70,19 @@ function markFound(found, cb, descr) {
 
         tried += 1;
         if (times === size) {
+          // Marked the word!
           accomplished += 1;
           _.forEach(descr, ({index}) => {
             // mark all completed ones
-            $(indexClass(index)).removeClass().addClass('completed');
+            clss$(indexClass(index)).removeClass('passed marked').addClass('completed');
           });
+          return setTimeout(cb, 2000); // Show it longer
+        } else {
+          return cb();
         }
 
-        return setTimeout(cb, time);
       } else {
+        times += 1;
         return go(newDescr);
       }
     }, time);
@@ -88,12 +91,12 @@ function markFound(found, cb, descr) {
   return go(_.map(found, (rest, index) => ({index, rest})));
 }
 
-function clearFound(matrix, found, cb) {
-  _.forEach(found, (path) => {
-    _.forEach(path, ([r, c]) => {
+function clearMatrix(matrix, found, cb) {
+  _.times(size, (r) => {
+    _.times(size, (c) => {
       index$(r, c).removeClass();
     });
-  });
+  })
 }
 
 // Shuffle all letters
@@ -157,7 +160,7 @@ function find(matrix) {
 }
 
 function shuffledShownMatrix(matrix, times, cb) {
-  const time = 300;
+  const time = 100;
 
   showMatrix(matrix);
   if (times < 1) {
@@ -174,16 +177,16 @@ function logMatrix(matrix) {
   console.log(_.map(matrix, (row) => row.join(' ')).join('\n'));
 }
 
-function workIt() {
-  const time = 2000;
+function workIt(matrix) {
+  const time = 1000;
 
   setTimeout(function() {
-    shuffledShownMatrix(initialMatrix(), 3, function(matrix) {
+    clearMatrix(matrix);
+    shuffledShownMatrix(matrix, 1, function(matrix) {
       const found = find(matrix);
       markFound(found, function(letters) {
         showCounters();
-        clearFound(matrix, found);
-        workIt();
+        workIt(matrix);
       });
     });
   }, time);
@@ -193,5 +196,5 @@ $(document).ready(function() {
   const matrix = initialMatrix();
   showCounters();
   showMatrix(matrix);
-  workIt();
+  workIt(matrix);
 });
