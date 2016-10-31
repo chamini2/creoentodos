@@ -4,7 +4,8 @@
   "description": "CREO EN TODOS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel --minified *.js -o index.min.js",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
