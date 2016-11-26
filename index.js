@@ -42,7 +42,7 @@ function showMatrix(matrix) {
 }
 
 function markFound(found, cb, descr) {
-  const time = 1000;
+  const time = 800;
 
   function indexClass(index) {
     return `path_${index}`
@@ -54,12 +54,12 @@ function markFound(found, cb, descr) {
   let times = 0;
   function go(descr) {
     setTimeout(function() {
-      clss$('marked').removeClass('marked');
+      clss$('marked').removeClass('marked just-marked');
 
       const newDescr = _(descr).filter('rest[0]')
       .map(({index, rest: [[r,c], ...rest]}) => {
         const clss = indexClass(index);
-        index$(r, c).addClass(`${clss} passed`);
+        index$(r, c).addClass(`${clss} just-marked`);
         clss$(clss).addClass('marked');
         return {index, rest};
       })
@@ -161,7 +161,7 @@ function find(matrix) {
 }
 
 function shuffledShownMatrix(matrix, times, cb) {
-  const time = 200;
+  const time = 140;
 
   showMatrix(matrix);
   if (times < 1) {

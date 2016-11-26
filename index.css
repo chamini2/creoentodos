@@ -34,27 +34,12 @@ a:hover {
   margin: auto;
 }
 
-@keyframes marked {
-  0% {
-    color: #7aff84;
-  }
-  50% {
-    color: #00cce0;
-  }
-  100% {
-    color: #7aff84;
-  }
-}
-
 @keyframes non-completed {
-  0% {
+  from {
     color: #ffffff;
   }
-  50% {
+  to {
     color: #000000;
-  }
-  100% {
-    color: #ffffff;
   }
 }
 
@@ -62,17 +47,16 @@ a:hover {
   animation-name: non-completed;
   animation-duration: 1s;
   animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 .marked {
-  animation-name: marked;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  text-decoration: underline;
+  color: #9eff9e;
 }
 
-.passed {
-  color: #9eff9e;
+.just-marked {
+  /*text-decoration: underline;*/
+  font-weight: 700;
 }
 
 td {
