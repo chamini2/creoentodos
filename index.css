@@ -30,39 +30,21 @@ a:hover {
   color: #ffffff;
 }
 
-#matrix {
-  margin: auto;
+.hidden {
+  display: none;
 }
 
-@keyframes non-completed {
-  from {
-    color: #ffffff;
-  }
-  to {
-    color: #000000;
-  }
+#tab-selector {
+  list-style: none;
+  height: 10px;
 }
 
-.non-completed {
-  animation-name: non-completed;
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+#tab-selector, li {
+  margin-left: 15px;
 }
 
-.marked {
-  color: #9eff9e;
-}
-
-.just-marked {
-  /*text-decoration: underline;*/
-  font-weight: 700;
-}
-
-td {
-  font-size: 3ex;
-  width: 4ex;
-  height: 4ex;
+.tab {
+  float: left;
 }
 
 #authors {
