@@ -31,7 +31,7 @@
   font-weight: 700;
 }
 
-td {
+#matrix td {
   font-size: 3ex;
   width: 4ex;
   height: 4ex;

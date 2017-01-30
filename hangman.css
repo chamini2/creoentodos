@@ -1,0 +1,9 @@
+#hangman-row {
+  margin: auto;
+}
+
+#hangman-row td {
+  font-size: 3ex;
+  width: 4ex;
+  height: 4ex;
+}

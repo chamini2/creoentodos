@@ -4,7 +4,7 @@
   "description": "CREO EN TODOS",
   "main": "index.js",
   "scripts": {
-    "build": "babel --minified --no-comments index.js matrix.js -o index.min.js",
+    "build": "babel --minified --no-comments index.js hangman.js wordsearch.js -o index.min.js",
     "postinstall": "npm run build"
   },
   "repository": {

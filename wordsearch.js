@@ -237,9 +237,6 @@ function changePosition(name) {
       positions = findPosAnyDir;
       break;
   }
-
-  clss$('matrix-mode').removeClass('active-matrix-mode');
-  id$(`matrix-mode-${name}`).addClass('active-matrix-mode');
 }
 
 $(document).ready(function() {
