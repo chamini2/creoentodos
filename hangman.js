@@ -5,6 +5,7 @@ const LETTERS ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 function Hid$(id) {
   return id$(`H-${id}`);
 }
+
 function clearRow() {
   _.times(SIZE, (i) => {
     Hid$(i).text('_');
@@ -17,24 +18,28 @@ function setUnderline(ind) {
 }
 
 function cycleLetter(ind) {
-  if (ind == 11) {
-    // restart the whole thing
-    setTimeout(function() {
-      clearRow();
-      cycleLetter(0)
-    }, 500);
-  } else {
-    setUnderline(ind);
-    setTimeout(function() {
-      const toFind = CREOENTODOS[ind];
-      const letter = _.sample(LETTERS);
-      const nextInd = toFind == letter ? ind + 1 : ind;
-
-      Hid$(ind).text(letter);
-
-      cycleLetter(nextInd);
-    }, 100);
+  if (ind == 0) {
+    clearRow();
   }
+
+  setUnderline(ind);
+
+  setTimeout(function() {
+    const toFind = CREOENTODOS[ind];
+    const letter = _.sample(LETTERS);
+
+    Hid$(ind).text(letter);
+
+    if (toFind == letter) {
+      // next letter
+      setTimeout(function() {
+        cycleLetter((ind + 1) % SIZE);
+      }, 300);
+    } else {
+      // same position
+      cycleLetter(ind);
+    }
+  }, 100);
 }
 
 $(document).ready(function() {
