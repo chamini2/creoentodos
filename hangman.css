@@ -7,3 +7,7 @@
   width: 4ex;
   height: 4ex;
 }
+
+#hangman-row .choosing {
+  text-decoration: underline;
+}
