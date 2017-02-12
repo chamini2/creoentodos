@@ -1,3 +1,6 @@
+@import "hangman.css";
+@import "wordsearch.css";
+
 html, body {
     margin: 0;
     height: 100%;
@@ -33,7 +36,7 @@ a {
   display: flex;
   color: #bbbbbb;
   font-weight: 200;
-  font-size: 0.9em;
+  font-size: 1em;
   position: absolute;
   justify-content: space-around;
   bottom: 0;
