@@ -11,9 +11,6 @@ const dirs = {
   'down-right' : [ 1, 1]
 };
 
-let accomplished = 0;
-let tried = 0;
-
 function initialMatrix() {
   let matrix = [];
   _.times(size, () => {
@@ -21,80 +18,6 @@ function initialMatrix() {
   });
 
   return matrix;
-}
-
-function index$(r, c) {
-  return $(`#${r}_${c}`);
-}
-
-function showCounters() {
-  $('#tried').text(tried);
-  $('#accomplished').text(accomplished);
-}
-
-function showMatrix(matrix) {
-  _.forEach(matrix, (word, r) => {
-    _.forEach(word, (letter, c) => {
-      const letterTD = index$(r, c);
-      letterTD.text(letter);
-    });
-  });
-}
-
-function markFound(found, cb, descr) {
-  const time = 800;
-
-  function indexClass(index) {
-    return `path_${index}`
-  }
-
-  let times = 0;
-  function go(descr) {
-    setTimeout(function() {
-      clss$('marked').removeClass('marked just-marked');
-
-      const newDescr = _(descr).filter('rest[0]')
-      .map(({index, rest: [[r,c], ...rest]}) => {
-        const clss = indexClass(index);
-        index$(r, c).addClass(`${clss} just-marked`);
-        clss$(clss).addClass('marked');
-        return {index, rest};
-      })
-      .value();
-
-      if (_.isEmpty(newDescr)) {
-        // No more letters to mark
-
-        tried += 1;
-        if (times === size) {
-          // Marked the word!
-          accomplished += 1;
-          $('#matrix td').addClass('non-completed');
-          _.forEach(descr, ({index}) => {
-            // mark all completed ones
-            clss$(indexClass(index)).removeClass('non-completed').addClass('completed');
-          });
-          return setTimeout(cb, 3000); // Show it longer
-        } else {
-          return cb();
-        }
-
-      } else {
-        times += 1;
-        return go(newDescr);
-      }
-    }, time);
-  }
-
-  return go(_.map(found, (rest, index) => ({index, rest})));
-}
-
-function clearMatrix() {
-  _.times(size, (r) => {
-    _.times(size, (c) => {
-      index$(r, c).removeClass();
-    });
-  })
 }
 
 // Shuffle all letters
@@ -191,58 +114,144 @@ function find(matrix, positions) {
   return _.reduce(restL, go, paths);
 }
 
-function shuffledShownMatrix(matrix, times, cb) {
-  const time = 140;
+function wordsearch(type, name) {
+  let accomplished = 0;
+  let tried = 0;
 
-  showMatrix(matrix);
-  if (times < 1) {
-    cb(matrix);
-  } else {
-    matrix = shuffleAll(matrix);
-    setTimeout(function () {
-      shuffledShownMatrix(matrix, times-1, cb);
-    }, time);
+  function nameClss$(clss) {
+    return $(`#${name} .${clss}`)
   }
-}
 
-function logMatrix(matrix) {
-  console.log(_.map(matrix, (row) => row.join(' ')).join('\n'));
-}
+  function index(r, c) {
+    return `w-${r}_${c}`;
+  }
 
-function workIt(matrix) {
-  clearMatrix();
-  shuffledShownMatrix(matrix, 5, function(matrix) {
-    const found = find(matrix, positions);
-    markFound(found, function(letters) {
-      showCounters();
-      workIt(matrix);
+  function index$(r, c) {
+    return $(`#${name} .${index(r,c)}`);
+  }
+
+  function showCounters() {
+    nameClss$('tried').text(tried);
+    nameClss$('accomplished').text(accomplished);
+  }
+
+  function showMatrix(matrix) {
+    _.forEach(matrix, (word, r) => {
+      _.forEach(word, (letter, c) => {
+        const letterTD = index$(r, c);
+        letterTD.text(letter);
+      });
     });
-  });
-}
-
-// The positions function to use in the find function
-let positions;
-
-// To change the positions function to use
-function changePosition(name) {
-  switch (name) {
-    case 'wrap':
-      positions = findPosAnyDirWrap;
-      break;
-    case 'continued':
-      positions = findContinuedDir;
-      break;
-    case 'any':
-    default:
-      positions = findPosAnyDir;
-      break;
   }
-}
 
-$(document).ready(function() {
+  function markFound(found, cb, descr) {
+    const time = 800;
+
+    function indexClass(index) {
+      return `path_${index}`
+    }
+
+    let times = 0;
+    function go(descr) {
+      setTimeout(function() {
+        nameClss$('marked').removeClass('marked just-marked');
+
+        const newDescr = _(descr).filter('rest[0]')
+        .map(({index, rest: [[r,c], ...rest]}) => {
+          const clss = indexClass(index);
+          index$(r, c).addClass(`${clss} just-marked`);
+          nameClss$(clss).addClass('marked');
+          return {index, rest};
+        })
+        .value();
+
+        if (_.isEmpty(newDescr)) {
+          // No more letters to mark
+
+          tried += 1;
+          if (times === size) {
+            // Marked the word!
+            accomplished += 1;
+            $('#matrix td').addClass('non-completed');
+            _.forEach(descr, ({index}) => {
+              // mark all completed ones
+              nameClss$(indexClass(index)).removeClass('non-completed').addClass('completed');
+            });
+            return setTimeout(cb, 3000); // Show it longer
+          } else {
+            return cb();
+          }
+
+        } else {
+          times += 1;
+          return go(newDescr);
+        }
+      }, time);
+    }
+
+    return go(_.map(found, (rest, index) => ({index, rest})));
+  }
+
+  function clearMatrix() {
+    _.times(size, (r) => {
+      _.times(size, (c) => {
+        index$(r, c).removeClass().addClass(index(r,c));
+      });
+    })
+  }
+
+  function shuffledShownMatrix(matrix, times, cb) {
+    const time = 140;
+
+    showMatrix(matrix);
+    if (times < 1) {
+      cb(matrix);
+    } else {
+      matrix = shuffleAll(matrix);
+      setTimeout(function () {
+        shuffledShownMatrix(matrix, times-1, cb);
+      }, time);
+    }
+  }
+
+  function logMatrix(matrix) {
+    console.log(_.map(matrix, (row) => row.join(' ')).join('\n'));
+  }
+
+  function workIt(matrix) {
+    clearMatrix();
+    shuffledShownMatrix(matrix, 5, function(matrix) {
+      const found = find(matrix, positions);
+      markFound(found, function(letters) {
+        showCounters();
+        workIt(matrix);
+      });
+    });
+  }
+
+  // The positions function to use in the find function
+  let positions;
+
+  // To change the positions function to use
+  function changePosition(name) {
+    switch (name) {
+      case 'wrap':
+        positions = findPosAnyDirWrap;
+        break;
+      case 'continued':
+        positions = findContinuedDir;
+        break;
+      case 'any':
+      default:
+        positions = findPosAnyDir;
+        break;
+    }
+  }
+
   const matrix = initialMatrix();
   showCounters();
   showMatrix(matrix);
-  changePosition('any');
+  changePosition(type);
   setTimeout(() => workIt(matrix), 1000);
-});
+
+}

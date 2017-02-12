@@ -27,7 +27,7 @@
   font-weight: 700;
 }
 
-#matrix td {
+.matrix td {
   font-size: 4vmin;
   width: 5vmin;
   height: 5vmin;
