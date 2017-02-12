@@ -24,7 +24,7 @@ function initialMatrix() {
 }
 
 function index$(r, c) {
-  return $(`#${_.padStart(r, 2, '0')}_${_.padStart(c, 2, '0')}`);
+  return $(`#${r}_${c}`);
 }
 
 function showCounters() {

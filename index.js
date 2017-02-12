@@ -6,14 +6,30 @@ function id$(id) {
   return $(`#${id}`);
 }
 
-function changeTab(sw) {
-  // Get all elements with class="tabcontent" and hide them
-  clss$('content').addClass('hidden');
+function wordsearchHTML() {
+  const rows = _.times(11, (i) => {
+    const rowCols = _.times(11,
+      (j) => `<td id="${i}_${j}">_</td>`
+    );
+    return `<tr>${rowCols.join('\n\t')}\n</tr>`;
+  });
 
-  // Get all elements with class="tablinks" and remove the class "active"
-  clss$('tab').removeClass('active');
-
-  // Show the current tab, and add an "active" class to the link that opened the tab
-  id$(`${sw}-tab`).addClass('active');
-  id$(sw).removeClass('hidden');
+  return `<table id="matrix"><tbody>
+    ${rows.join('\n')}
+  </tbody></table>`;
 }
+
+function hangmanHTML() {
+  const rows = [
+    _.times(11,
+      (i) => `<td id="H-${i}">_</td>`
+    ).join('\n\t')
+  ]
+
+  return `<table id="hangman-row"><tbody>
+    ${rows.join('\n')}
+  </tbody></table>`;
+}
+
+id$('wordsearch').html(wordsearchHTML());
+id$('hangman').html(hangmanHTML());

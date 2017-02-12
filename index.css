@@ -1,24 +1,15 @@
-html {
-  height: 100%;
-  box-sizing: border-box;
+html, body {
+    margin: 0;
+    height: 100%;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background-color: black;
+    color: white;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-body {
-  max-width: 800px;
-  position: relative;
-  margin: auto;
-  padding-top: 2rem;
-  padding-bottom: 6rem;
-  min-height: 100%;
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  background-color: black;
-  color: white;
+body{
+    margin: auto;
+    position: relative;
+    max-width: 1000px;
 }
 
 a {
@@ -26,42 +17,25 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  color: #ffffff;
+.swiper-container {
+    width: 100%;
+    height: 100%;
 }
 
-.hidden {
-  display: none;
-}
-
-#tab-selector {
-  list-style: none;
-  height: 10px;
-}
-
-#tab-selector, li {
-  margin-left: 15px;
-}
-
-.tab {
-  float: left;
+.swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 #authors {
-  height: 4em;
+  display: flex;
   color: #bbbbbb;
   font-weight: 200;
-  font-size: 0.75em;
+  font-size: 0.9em;
   position: absolute;
-  right: 0;
-  left: 0;
+  justify-content: space-around;
   bottom: 0;
-}
-#artist {
-  float: left;
-  text-align: left;
-}
-#developer {
-  float: right;
-  text-align: right;
+  width: 100%;
 }

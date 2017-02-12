@@ -1,7 +1,3 @@
-#matrix {
-  margin: auto;
-}
-
 @keyframes non-completed {
   from {
     color: #ffffff;
@@ -27,12 +23,13 @@
 }
 
 .just-marked {
-  /*text-decoration: underline;*/
+  /*text-decoration: underline; */
   font-weight: 700;
 }
 
 #matrix td {
-  font-size: 3ex;
-  width: 4ex;
-  height: 4ex;
+  font-size: 3vmin;
+  width: 4vmin;
+  height: 4vmin;
+  text-align: center;
 }
