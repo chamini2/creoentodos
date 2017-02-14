@@ -118,8 +118,12 @@ function wordsearch(type, name) {
   let accomplished = 0;
   let tried = 0;
 
+  function name$(elem) {
+    return $(`#${name} ${elem}`);
+  }
+
   function nameClss$(clss) {
-    return $(`#${name} .${clss}`)
+    return name$(`.${clss}`)
   }
 
   function index(r, c) {
@@ -127,7 +131,7 @@ function wordsearch(type, name) {
   }
 
   function index$(r, c) {
-    return $(`#${name} .${index(r,c)}`);
+    return name$(`.${index(r,c)}`);
   }
 
   function showCounters() {
@@ -172,14 +176,14 @@ function wordsearch(type, name) {
           if (times === size) {
             // Marked the word!
             accomplished += 1;
-            $('#matrix td').addClass('non-completed');
+            name$('td').addClass('non-completed');
             _.forEach(descr, ({index}) => {
               // mark all completed ones
               nameClss$(indexClass(index)).removeClass('non-completed').addClass('completed');
             });
-            return setTimeout(cb, 3000); // Show it longer
+            return setTimeout(cb, 6000); // Show it longer
           } else {
-            return cb();
+            return setTimeout(cb, 1500);
           }
 
         } else {
@@ -207,7 +211,7 @@ function wordsearch(type, name) {
     if (times < 1) {
       cb(matrix);
     } else {
-      matrix = shuffleAll(matrix);
+      matrix = shuffle(matrix);
       setTimeout(function () {
         shuffledShownMatrix(matrix, times-1, cb);
       }, time);
@@ -230,7 +234,7 @@ function wordsearch(type, name) {
   }
 
   // The positions function to use in the find function
-  let positions;
+  let positions = findPosAnyDir, shuffle = shuffleLines;
 
   // To change the positions function to use
   function changePosition(name) {
@@ -241,7 +245,6 @@ function wordsearch(type, name) {
       case 'continued':
         positions = findContinuedDir;
         break;
-      case 'any':
       default:
         positions = findPosAnyDir;
         break;
