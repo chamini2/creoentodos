@@ -66,7 +66,7 @@ function findContinuedDir(matrix, path, letter) {
 
     const [r, c] = _.zipWith(lastP, penultimateP, (l,p) => l + (l-p));
     if (_.get(matrix, `[${r}][${c}]`) === letter) {
-      return [[r], [c]];
+      return [[r, c]];
     } else {
       return [];
     }
