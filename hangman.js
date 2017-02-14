@@ -8,21 +8,17 @@ function Hid$(id) {
 
 function clearRow() {
   _.times(SIZE, (i) => {
-    Hid$(i).text('_');
+    Hid$(i).text(' ');
   });
 }
 
-function setUnderline(ind) {
+function markChoosing(ind) {
   clss$('choosing').removeClass('choosing');
   Hid$(ind).addClass('choosing');
 }
 
 function cycleLetter(ind) {
-  if (ind == 0) {
-    clearRow();
-  }
-
-  setUnderline(ind);
+  markChoosing(ind);
 
   setTimeout(function() {
     const toFind = CREOENTODOS[ind];
@@ -32,14 +28,23 @@ function cycleLetter(ind) {
 
     if (toFind == letter) {
       // next letter
-      setTimeout(function() {
-        cycleLetter((ind + 1) % SIZE);
-      }, 300);
+      if (ind + 1 === SIZE) {
+        // finished finding the word!
+        setTimeout(function() {
+          clearRow();
+          cycleLetter(0);
+        }, 1000);
+      } else {
+        // keep finding the word
+        setTimeout(function() {
+          cycleLetter(ind + 1);
+        }, 300);
+      }
     } else {
       // same position
       cycleLetter(ind);
     }
-  }, 100);
+  }, 75);
 }
 
 $(document).ready(function() {

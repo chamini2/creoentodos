@@ -6,9 +6,9 @@
   font-size: 4vmin;
   width: 5vmin;
   height: 5vmin;
-  color: #9eff9e;
+  color: #ffffff;
 }
 
 #hangman-row .choosing {
-  text-decoration: underline;
+  /*text-decoration: underline;*/
 }

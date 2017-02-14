@@ -22,7 +22,7 @@ function wordsearchHTML() {
 function hangmanHTML() {
   const rows = [
     _.times(11,
-      (i) => `<td id="H-${i}">_</td>`
+      (i) => `<td id="H-${i}"> </td>`
     ).join('\n\t')
   ]
 
