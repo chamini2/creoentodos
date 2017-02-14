@@ -32,16 +32,12 @@ function hangmanHTML() {
 }
 
 $(document).ready(function() {
-  // const matrix = initialMatrix();
-  // showCounters();
-  // showMatrix(matrix);
-  // changePosition('any');
-  // setTimeout(() => workIt(matrix), 1000);
-
+  // wordsearch softwares
   _.forEach(['any', 'wrap', 'continued'], (type) => {
     const name = `wordsearch-${type}`;
     id$(name).html(wordsearchHTML(type));
     wordsearch(type, name);
   });
+  // hangman software
   id$('hangman').html(hangmanHTML());
 });
