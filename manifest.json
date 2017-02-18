@@ -7,8 +7,20 @@
   "theme_color": "black",
   "background_color": "#EAEAEA",
   "icons": [{
-    "src": "images/icon.png",
+    "src": "images/icon720.png",
     "sizes": "720x720",
+    "type": "image/png"
+  }, {
+    "src": "images/icon360.png",
+    "sizes": "360x360",
+    "type": "image/png"
+  }, {
+    "src": "images/icon180.png",
+    "sizes": "180x180",
+    "type": "image/png"
+  }, {
+    "src": "images/icon90.png",
+    "sizes": "90x90",
     "type": "image/png"
   }]
 }
