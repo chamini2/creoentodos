@@ -1,10 +1,11 @@
 {
-  "name": "CREO EN TODOS",
+  "name": "APROXIMACIONES A UNA POSTURA ALTRUISTA",
   "short_name": "CREO EN TODOS",
   "start_url": "index.html",
   "display": "fullscreen",
   "orientation": "portrait",
   "theme_color": "black",
+  "background_color": "#EAEAEA",
   "icons": [{
     "src": "images/icon.png",
     "sizes": "720x720",
