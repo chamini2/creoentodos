@@ -1,0 +1,15 @@
+#concurrent-row {
+  margin: auto;
+}
+
+#concurrent-row td {
+  font-size: 4vmin;
+  width: 5vmin;
+  height: 5vmin;
+  color: #bbbbbb;
+}
+
+#concurrent-row .C-found {
+  color: #ffffff;
+  /*font-weight: bold;*/
+}

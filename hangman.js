@@ -2,52 +2,64 @@ const CREOENTODOS = "CREOENTODOS";
 const SIZE = _.size(CREOENTODOS);
 const LETTERS ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+function hangmanHTML() {
+  const rows = [
+    _.times(SIZE,
+      (i) => `<td id="H-${i}"> </td>`
+    ).join('\n\t')
+  ]
+
+  return `<table id="hangman-row"><tbody>
+    ${rows.join('\n')}
+  </tbody></table>`;
+}
+
 function Hid$(id) {
   return id$(`H-${id}`);
 }
 
-function clearRow() {
+function HClearRow() {
   _.times(SIZE, (i) => {
     Hid$(i).text(' ');
   });
 }
 
-function markChoosing(ind) {
+function HMarkChoosing(ind) {
   clss$('choosing').removeClass('choosing');
   Hid$(ind).addClass('choosing');
 }
 
-function cycleLetter(ind) {
-  markChoosing(ind);
+function HCycleLetter(ind) {
+  HMarkChoosing(ind);
 
-  setTimeout(function() {
-    const toFind = CREOENTODOS[ind];
-    const letter = _.sample(LETTERS);
+  const toFind = CREOENTODOS[ind];
+  const letter = _.sample(LETTERS);
 
-    Hid$(ind).text(letter);
+  Hid$(ind).text(letter);
 
-    if (toFind == letter) {
-      // next letter
-      if (ind + 1 === SIZE) {
-        // finished finding the word!
-        setTimeout(function() {
-          clearRow();
-          cycleLetter(0);
-        }, 1000);
-      } else {
-        // keep finding the word
-        setTimeout(function() {
-          cycleLetter(ind + 1);
-        }, 300);
-      }
+  if (toFind == letter) {
+    // next letter
+    if (ind + 1 === SIZE) {
+      // finished finding the word!
+      setTimeout(function() {
+        HClearRow();
+        HCycleLetter(0);
+      }, 1000);
     } else {
-      // same position
-      cycleLetter(ind);
+      // keep finding the word
+      setTimeout(function() {
+        HCycleLetter(ind + 1);
+      }, 300);
     }
-  }, 75);
+  } else {
+    // same position
+    setTimeout(function() {
+      HCycleLetter(ind);
+    }, 75);
+  }
 }
 
 $(document).ready(function() {
-  clearRow();
-  cycleLetter(0);
+  HClearRow();
+  HCycleLetter(0);
 });

@@ -11,7 +11,20 @@ const dirs = {
   'down-right' : [ 1, 1]
 };
 
-function initialMatrix() {
+function wordsearchHTML() {
+  const rows = _.times(11, (i) => {
+    const rowCols = _.times(11,
+      (j) => `<td class="w-${i}_${j}">_</td>`
+    );
+    return `<tr>${rowCols.join('\n\t')}\n</tr>`;
+  });
+
+  return `<table class="matrix"><tbody>
+    ${rows.join('\n')}
+  </tbody></table>`;
+}
+
+function WInitialMatrix() {
   let matrix = [];
   _.times(size, () => {
     matrix.push(_.toArray(CREOENTODOS));
@@ -21,16 +34,16 @@ function initialMatrix() {
 }
 
 // Shuffle all letters
-function shuffleAll(matrix) {
+function WShuffleAll(matrix) {
   return _.chunk(_.shuffle(_.flatten(matrix)), size);
 }
 
 // Shuffle per line
-function shuffleLines(matrix) {
+function WShuffleLines(matrix) {
   return _.map(matrix, _.flowRight(_.shuffle, _.cloneDeep));
 }
 
-function findPosAnyDir(matrix, path, letter) {
+function WFindPosAnyDir(matrix, path, letter) {
   const lastP = _.nth(path, -1);
   const penultimateP = _.nth(path, -2);
 
@@ -43,7 +56,7 @@ function findPosAnyDir(matrix, path, letter) {
   .value();
 }
 
-function findPosAnyDirWrap(matrix, path, letter) {
+function WFindPosAnyDirWrap(matrix, path, letter) {
   const lastP = _.nth(path, -1);
   const penultimateP = _.nth(path, -2);
 
@@ -57,9 +70,9 @@ function findPosAnyDirWrap(matrix, path, letter) {
   .value();
 }
 
-function findContinuedDir(matrix, path, letter) {
+function WFindContinuedDir(matrix, path, letter) {
   if (_.size(path) == 1) {
-    return findPosAnyDir(matrix, path, letter);
+    return WFindPosAnyDir(matrix, path, letter);
   } else {
     const lastP = _.nth(path, -1);
     const penultimateP = _.nth(path, -2);
@@ -73,7 +86,7 @@ function findContinuedDir(matrix, path, letter) {
   }
 }
 
-function find(matrix, positions) {
+function WFind(matrix, positions) {
   let paths = [];
 
   const startL = _.head(CREOENTODOS);
@@ -225,7 +238,7 @@ function wordsearch(type, name) {
   function workIt(matrix) {
     clearMatrix();
     shuffledShownMatrix(matrix, 5, function(matrix) {
-      const found = find(matrix, positions);
+      const found = WFind(matrix, positions);
       markFound(found, function(letters) {
         showCounters();
         workIt(matrix);
@@ -234,24 +247,24 @@ function wordsearch(type, name) {
   }
 
   // The positions function to use in the find function
-  let positions = findPosAnyDir, shuffle = shuffleLines;
+  let positions = WFindPosAnyDir, shuffle = WShuffleLines;
 
   // To change the positions function to use
   function changePosition(name) {
     switch (name) {
       case 'wrap':
-        positions = findPosAnyDirWrap;
+        positions = WFindPosAnyDirWrap;
         break;
       case 'continued':
-        positions = findContinuedDir;
+        positions = WFindContinuedDir;
         break;
       default:
-        positions = findPosAnyDir;
+        positions = WFindPosAnyDir;
         break;
     }
   }
 
-  const matrix = initialMatrix();
+  const matrix = WInitialMatrix();
   showCounters();
   showMatrix(matrix);
   changePosition(type);
