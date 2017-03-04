@@ -17,4 +17,6 @@ $(document).ready(function() {
   id$('hangman').html(hangmanHTML());
   // concurrent software
   id$('concurrent').html(concurrentHTML());
+  // list software
+  id$('list').html(listHTML());
 });
