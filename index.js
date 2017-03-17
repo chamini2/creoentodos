@@ -7,16 +7,13 @@ function id$(id) {
 }
 
 $(document).ready(function() {
-  // wordsearch softwares
   _.forEach(['any', 'wrap', 'continued'], (type) => {
     const name = `wordsearch-${type}`;
     id$(name).html(wordsearchHTML(type));
     wordsearch(type, name);
   });
-  // hangman software
   id$('hangman').html(hangmanHTML());
-  // concurrent software
   id$('concurrent').html(concurrentHTML());
-  // list software
   id$('list').html(listHTML());
+  id$('swap').html(swap.HTML());
 });

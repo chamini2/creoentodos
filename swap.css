@@ -1,0 +1,15 @@
+#swap-row {
+  margin: auto;
+}
+
+#swap-row td {
+  font-size: 4vmin;
+  width: 5vmin;
+  height: 5vmin;
+  color: #bbbbbb;
+}
+
+#swap-row .S-found {
+  color: #ffffff;
+  /*font-weight: bold;*/
+}

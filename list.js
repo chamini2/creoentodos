@@ -79,7 +79,7 @@ const starts = [
   'Habiendo no creído',
   'No haber creído'
 ];
-let phrases = _.flatMap(starts, (str) => _.map(endings, (end) => `${str} en ${end}`));
+let phrases = _.flatMap(starts, (sta) => _.map(endings, (end) => `${sta} en ${end}`));
 
 function listHTML() {
   return `<div id="list-row"></div>`;

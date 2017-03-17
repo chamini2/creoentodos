@@ -1,6 +1,7 @@
 @import "concurrent.css";
 @import "hangman.css";
 @import "list.css";
+@import "swap.css";
 @import "wordsearch.css";
 
 html, body {
