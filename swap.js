@@ -48,7 +48,7 @@ const swap = {
     }
     setTimeout(function() {
       swap.cycle();
-    }, 750);
+    }, 100);
   }
 }
 
