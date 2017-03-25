@@ -27,28 +27,47 @@ const swap = {
   unmarkFound(ind) {
     swap.id$(ind).removeClass('S-found');
   },
+  indices : _.times(11),
+  checkMarking(ind, letter) {
+    if (letter == CREOENTODOS[ind]) {
+      // the new `ind` letter should be marked
+      swap.markFound(ind);
+      // remove it from indices
+      _.pull(swap.indices, ind);
+      console.log(swap.indices);
+      setTimeout(function() {
+        // re-add it after some time
+        swap.indices.push(ind);
+      }, 1500);
+    }
+  },
   cycle(state) {
-    const one = _.random(SIZE-1), two = _.random(SIZE-1);
-    const oneR = swap.id$(one), twoR = swap.id$(two);
-    const oneL = oneR.text(), twoL = twoR.text();
+    const one = _.sample(swap.indices);
+    const oneR = swap.id$(one);
+    const oneL = oneR.text();
 
-    swap.unmarkFound(one);
-    swap.unmarkFound(two);
+    const two = _.sample(swap.indices);
+    const twoR = swap.id$(two);
+    const twoL = twoR.text();
 
-    // swap letters
-    oneR.text(twoL);
-    twoR.text(oneL);
-    if (twoL == CREOENTODOS[one]) {
-      // the new one letter should be marked
-      swap.markFound(one);
+    if (one != two) {
+      // unmark them for now
+      swap.unmarkFound(one);
+      swap.unmarkFound(two);
+
+      // swap letters
+      oneR.text(twoL);
+      twoR.text(oneL);
+
+      // and check makings
+      swap.checkMarking(one, twoL);
+      swap.checkMarking(two, oneL);
     }
-    if (oneL == CREOENTODOS[two]) {
-      // the new two letter should be marked
-      swap.markFound(two);
-    }
+
     setTimeout(function() {
       swap.cycle();
-    }, 750);
+    }, 125);
+
   }
 }
 
