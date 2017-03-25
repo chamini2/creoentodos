@@ -2,16 +2,59 @@ const CREOENTODOS = "CREOENTODOS";
 const SIZE = _.size(CREOENTODOS);
 const LETTERS ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-function hangmanHTML() {
-  const rows = [
-    _.times(SIZE,
-      (i) => `<td id="H-${i}"> </td>`
-    ).join('\n\t')
-  ]
+const hangman = {
+  continue : false,
+  index : 0,
+  HTML() {
+    const rows = [
+      _.times(SIZE,
+        (i) => `<td id="H-${i}"> </td>`
+      ).join('\n\t')
+    ]
 
-  return `<table id="hangman-row"><tbody>
-    ${rows.join('\n')}
-  </tbody></table>`;
+    return `<table id="hangman-row"><tbody>
+      ${rows.join('\n')}
+    </tbody></table>`;
+  },
+  cycle() {
+    if (hangman.continue) {
+      console.log("hangman");
+
+      if (hangman.index == 0) {
+        HClearRow();
+      }
+      HMarkChoosing(hangman.index);
+
+      const toFind = CREOENTODOS[hangman.index];
+      const letter = _.sample(LETTERS);
+      let time = 75;
+
+      Hid$(hangman.index).text(letter);
+
+      if (toFind == letter) {
+        // found letter
+        hangman.index = (hangman.index + 1) % SIZE;
+
+        if (hangman.index == 0) {
+          // finished finding the word
+          time = 1000;
+        } else {
+          // next letter, same word
+          time = 300;
+        }
+      }
+
+      hangman.timeoutID = setTimeout(hangman.cycle, time);
+    }
+  },
+  start() {
+    hangman.continue = true;
+    hangman.cycle();
+  },
+  stop() {
+    hangman.continue = false;
+    clearTimeout(hangman.timeoutID);
+  }
 }
 
 function Hid$(id) {
@@ -29,37 +72,10 @@ function HMarkChoosing(ind) {
   Hid$(ind).addClass('choosing');
 }
 
-function HCycleLetter(ind) {
-  HMarkChoosing(ind);
-
-  const toFind = CREOENTODOS[ind];
-  const letter = _.sample(LETTERS);
-
-  Hid$(ind).text(letter);
-
-  if (toFind == letter) {
-    // next letter
-    if (ind + 1 === SIZE) {
-      // finished finding the word!
-      setTimeout(function() {
-        HClearRow();
-        HCycleLetter(0);
-      }, 1000);
-    } else {
-      // keep finding the word
-      setTimeout(function() {
-        HCycleLetter(ind + 1);
-      }, 300);
-    }
+swpr.on('slideChangeStart', function (a) {
+  if (a.realIndex == INDEX_HANGMAN) {
+    hangman.start();
   } else {
-    // same position
-    setTimeout(function() {
-      HCycleLetter(ind);
-    }, 75);
+    hangman.stop();
   }
-}
-
-$(document).ready(function() {
-  HClearRow();
-  HCycleLetter(0);
 });

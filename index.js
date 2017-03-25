@@ -12,7 +12,7 @@ $(document).ready(function() {
     id$(name).html(wordsearchHTML(type));
     wordsearch(type, name);
   });
-  id$('hangman').html(hangmanHTML());
+  id$('hangman').html(hangman.HTML());
   id$('concurrent').html(concurrent.HTML());
   id$('list').html(list.HTML());
   id$('swap').html(swap.HTML());
