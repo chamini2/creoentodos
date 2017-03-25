@@ -13,7 +13,7 @@ $(document).ready(function() {
     wordsearch(type, name);
   });
   id$('hangman').html(hangmanHTML());
-  id$('concurrent').html(concurrentHTML());
+  id$('concurrent').html(concurrent.HTML());
   id$('list').html(list.HTML());
   id$('swap').html(swap.HTML());
 });
