@@ -66,9 +66,7 @@ const swap = {
     }
 
     if (swap.continue) {
-      setTimeout(function() {
-        swap.cycle();
-      }, 125);
+      setTimeout(function() { swap.cycle(); }, 125);
     }
   }
 }

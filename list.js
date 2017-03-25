@@ -92,16 +92,17 @@ const list = {
     id$('list-row').text(phrase);
   },
   showAll() {
+    list.running = true;
     console.log("list");
 
     if (list.index >= 0) {
       list.show(list.phrases[list.index]);
       list.index = list.index - 1;
-      setTimeout(function() {
-        if (list.continue) {
-          list.showAll();
-        }
-      }, 1250);
+      if (list.continue) {
+        setTimeout(function() { list.showAll(); }, 1250);
+      } else {
+        list.running = false;
+      }
     } else {
       list.phrases = _.shuffle(list.phrases);
       list.index = _.size(list.phrases);
@@ -112,7 +113,6 @@ const list = {
 }
 
 swpr.on('slideChangeStart', function (a) {
-
   if (a.realIndex == INDEX_LIST) {
     if (! list.initialized) {
       // initialize it with something
@@ -121,7 +121,9 @@ swpr.on('slideChangeStart', function (a) {
     }
 
     list.continue = true;
-    list.showAll();
+    if (! list.running) {
+      list.showAll();
+    }
   } else {
     list.continue = false;
   }
