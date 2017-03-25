@@ -66,14 +66,16 @@
     <script src="https://cdn.jsdelivr.net/bluebird/3.5.0/bluebird.min.js" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/lodash/4.16.4/lodash.min.js" charset="utf-8"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" charset="utf-8"></script>
-    <script src="index.min.js" charset="utf-8"></script>
     <!-- swiper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/js/swiper.min.js"></script>
     <script>
-      new Swiper('.swiper-container', {
+      var swpr = new Swiper('.swiper-container', {
         // Optional parameters
         direction: 'horizontal',
         // loop: true,
+
+        // control with arrows
+        keyboardControl: true,
 
         // If we need pagination
         // pagination: '.swiper-pagination',
@@ -85,7 +87,10 @@
 
         // And if we need scrollbar
         // scrollbar: '.swiper-scrollbar',
-      })
+      });
+      var INDEX_LIST = 5;
+      var INDEX_SWAP = 6;
     </script>
+    <script src="index.min.js" charset="utf-8"></script>
   </body>
 </html>

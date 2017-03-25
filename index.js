@@ -14,6 +14,6 @@ $(document).ready(function() {
   });
   id$('hangman').html(hangmanHTML());
   id$('concurrent').html(concurrentHTML());
-  id$('list').html(listHTML());
+  id$('list').html(list.HTML());
   id$('swap').html(swap.HTML());
 });

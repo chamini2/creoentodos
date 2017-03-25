@@ -3,6 +3,7 @@ const SIZE = _.size(CREOENTODOS);
 const LETTERS ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const swap = {
+  continue : false,
   HTML() {
     const rows = [
       _.times(SIZE,
@@ -34,7 +35,6 @@ const swap = {
       swap.markFound(ind);
       // remove it from indices
       _.pull(swap.indices, ind);
-      console.log(swap.indices);
       setTimeout(function() {
         // re-add it after some time
         swap.indices.push(ind);
@@ -42,6 +42,7 @@ const swap = {
     }
   },
   cycle(state) {
+    console.log("swap");
     const one = _.sample(swap.indices);
     const oneR = swap.id$(one);
     const oneL = oneR.text();
@@ -64,13 +65,19 @@ const swap = {
       swap.checkMarking(two, oneL);
     }
 
-    setTimeout(function() {
-      swap.cycle();
-    }, 125);
-
+    if (swap.continue) {
+      setTimeout(function() {
+        swap.cycle();
+      }, 125);
+    }
   }
 }
 
-$(document).ready(function() {
-  swap.cycle();
+swpr.on('slideChangeStart', function (a) {
+  if (a.realIndex == INDEX_SWAP) {
+    swap.continue = true;
+    swap.cycle();
+  } else {
+    swap.continue = false;
+  }
 });

@@ -1,7 +1,7 @@
 const endings = ['nadie', 'mí', 'ti', 'él', 'nosotros', 'ustedes', 'ellos'];
 const starts = [
-  'No creer',
   'No creo',
+  'No creer',
   'No crees',
   'No cree',
   'No creemos',
@@ -79,26 +79,50 @@ const starts = [
   'Habiendo no creído',
   'No haber creído'
 ];
-let phrases = _.flatMap(starts, (sta) => _.map(endings, (end) => `${sta} en ${end}`));
 
-function listHTML() {
-  return `<div id="list-row"></div>`;
+const list = {
+  continue : false,
+  index : -1,
+  phrases : _.flatMap(starts, (sta) => _.map(endings, (end) => `${sta} en ${end}`)),
+  initialzed : false,
+  HTML() {
+    return `<div id="list-row"></div>`;
+  },
+  show(phrase) {
+    id$('list-row').text(phrase);
+  },
+  showAll() {
+    console.log("list");
+
+    if (list.index >= 0) {
+      list.show(list.phrases[list.index]);
+      list.index = list.index - 1;
+      setTimeout(function() {
+        if (list.continue) {
+          list.showAll();
+        }
+      }, 1250);
+    } else {
+      list.phrases = _.shuffle(list.phrases);
+      list.index = _.size(list.phrases);
+      list.showAll();
+    }
+
+  }
 }
 
-function LShow(phrase) {
-  id$('list-row').text(phrase);
-}
+swpr.on('slideChangeStart', function (a) {
 
-function LShuffleAndShow() {
-  phrases = _.shuffle(phrases);
-  return Promise.mapSeries(phrases, (phrase) => 
-    new Promise(function(resolve) {
-      LShow(phrase);
-      setTimeout(resolve, 1750);
-    })
-  ).then(() => LShuffleAndShow());
-}
+  if (a.realIndex == INDEX_LIST) {
+    if (! list.initialized) {
+      // initialize it with something
+      list.show(_.sample(list.phrases));
+      list.initialized = true;
+    }
 
-$(document).ready(function() {
-  LShuffleAndShow();
+    list.continue = true;
+    list.showAll();
+  } else {
+    list.continue = false;
+  }
 });
