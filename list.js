@@ -84,7 +84,6 @@ const list = {
   continue : false,
   index : -1,
   phrases : _.flatMap(starts, (sta) => _.map(endings, (end) => `${sta} en ${end}`)),
-  initialzed : false,
   HTML() {
     return `<div id="list-row"></div>`;
   },
@@ -92,28 +91,21 @@ const list = {
     id$('list-row').text(phrase);
   },
   showAll() {
-    list.running = true;
-    console.log("list");
+    if (list.continue) {
+      console.log("list");
 
-    if (list.index >= 0) {
-      list.show(list.phrases[list.index]);
-      list.index = list.index - 1;
-      if (list.continue) {
-        setTimeout(function() { list.showAll(); }, 1250);
+      if (list.index >= 0) {
+        list.show(list.phrases[list.index]);
+        list.index = list.index - 1;
+        list.timeoutID = setTimeout(list.showAll, 1250);
       } else {
-        list.running = false;
+        list.phrases = _.shuffle(list.phrases);
+        list.index = _.size(list.phrases);
+        list.showAll();
       }
-    } else {
-      list.phrases = _.shuffle(list.phrases);
-      list.index = _.size(list.phrases);
-      list.showAll();
     }
-
-  }
-}
-
-swpr.on('slideChangeStart', function (a) {
-  if (a.realIndex == INDEX_LIST) {
+  },
+  start() {
     if (! list.initialized) {
       // initialize it with something
       list.show(_.sample(list.phrases));
@@ -121,10 +113,18 @@ swpr.on('slideChangeStart', function (a) {
     }
 
     list.continue = true;
-    if (! list.running) {
-      list.showAll();
-    }
-  } else {
+    list.showAll();
+  },
+  stop() {
     list.continue = false;
+    clearTimeout(list.timeoutID);
+  }
+}
+
+swpr.on('slideChangeStart', function (a) {
+  if (a.realIndex == INDEX_LIST) {
+    list.start();
+  } else {
+    list.stop();
   }
 });

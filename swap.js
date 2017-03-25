@@ -4,6 +4,7 @@ const LETTERS ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const swap = {
   continue : false,
+  indices : _.times(11),
   HTML() {
     const rows = [
       _.times(SIZE,
@@ -28,7 +29,6 @@ const swap = {
   unmarkFound(ind) {
     swap.id$(ind).removeClass('S-found');
   },
-  indices : _.times(11),
   checkMarking(ind, letter) {
     if (letter == CREOENTODOS[ind]) {
       // the new `ind` letter should be marked
@@ -42,40 +42,47 @@ const swap = {
     }
   },
   cycle(state) {
-    console.log("swap");
-    const one = _.sample(swap.indices);
-    const oneR = swap.id$(one);
-    const oneL = oneR.text();
-
-    const two = _.sample(swap.indices);
-    const twoR = swap.id$(two);
-    const twoL = twoR.text();
-
-    if (one != two) {
-      // unmark them for now
-      swap.unmarkFound(one);
-      swap.unmarkFound(two);
-
-      // swap letters
-      oneR.text(twoL);
-      twoR.text(oneL);
-
-      // and check makings
-      swap.checkMarking(one, twoL);
-      swap.checkMarking(two, oneL);
-    }
-
     if (swap.continue) {
-      setTimeout(function() { swap.cycle(); }, 125);
+      console.log("swap");
+      const one = _.sample(swap.indices);
+      const oneR = swap.id$(one);
+      const oneL = oneR.text();
+
+      const two = _.sample(swap.indices);
+      const twoR = swap.id$(two);
+      const twoL = twoR.text();
+
+      if (one != two) {
+        // unmark them for now
+        swap.unmarkFound(one);
+        swap.unmarkFound(two);
+
+        // swap letters
+        oneR.text(twoL);
+        twoR.text(oneL);
+
+        // and check makings
+        swap.checkMarking(one, twoL);
+        swap.checkMarking(two, oneL);
+      }
+
+      swap.timeoutID = setTimeout(swap.cycle, 125);
     }
+  },
+  start() {
+    swap.continue = true;
+    swap.cycle();
+  },
+  stop() {
+    swap.continue = false;
+    clearTimeout(swap.timeoutID);
   }
 }
 
 swpr.on('slideChangeStart', function (a) {
   if (a.realIndex == INDEX_SWAP) {
-    swap.continue = true;
-    swap.cycle();
+    swap.start();
   } else {
-    swap.continue = false;
+    swap.stop();
   }
 });
