@@ -38,7 +38,7 @@ const swap = {
       setTimeout(function() {
         // re-add it after some time
         swap.indices.push(ind);
-      }, 1500);
+      }, 2000);
     }
   },
   cycle(state) {
@@ -66,7 +66,7 @@ const swap = {
         swap.checkMarking(two, oneL);
       }
 
-      swap.timeoutID = setTimeout(swap.cycle, 125);
+      swap.timeoutID = setTimeout(swap.cycle, 200);
     }
   },
   start() {

@@ -27,7 +27,7 @@ const hangman = {
 
       const toFind = CREOENTODOS[hangman.index];
       const letter = _.sample(LETTERS);
-      let time = 75;
+      let time = 150;
 
       Hid$(hangman.index).text(letter);
 
@@ -37,10 +37,10 @@ const hangman = {
 
         if (hangman.index == 0) {
           // finished finding the word
-          time = 1000;
+          time = 2000;
         } else {
           // next letter, same word
-          time = 300;
+          time = 500;
         }
       }
 
