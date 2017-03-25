@@ -43,7 +43,7 @@ const swap = {
   },
   cycle(state) {
     if (swap.continue) {
-      console.log("swap");
+      // console.log("swap");
       const one = _.sample(swap.indices);
       const oneR = swap.id$(one);
       const oneL = oneR.text();

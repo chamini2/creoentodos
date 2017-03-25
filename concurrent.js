@@ -17,7 +17,7 @@ const concurrent = {
   },
   cycle(ind) {
     if (concurrent.continue) {
-      console.log("concurrent", ind);
+      // console.log("concurrent", ind);
 
       const toFind = CREOENTODOS[ind];
       const letter = _.sample(LETTERS);

@@ -92,7 +92,7 @@ const list = {
   },
   showAll() {
     if (list.continue) {
-      console.log("list");
+      // console.log("list");
 
       if (list.index >= 0) {
         list.show(list.phrases[list.index]);

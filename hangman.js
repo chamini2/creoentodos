@@ -18,7 +18,7 @@ const hangman = {
   },
   cycle() {
     if (hangman.continue) {
-      console.log("hangman");
+      // console.log("hangman");
 
       if (hangman.index == 0) {
         HClearRow();
