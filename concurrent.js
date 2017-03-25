@@ -3,6 +3,7 @@ const SIZE = _.size(CREOENTODOS);
 const LETTERS ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const concurrent = {
+  timeoutID : [],
   HTML() {
     const rows = [
       _.times(SIZE,
@@ -14,10 +15,33 @@ const concurrent = {
     ${rows.join('\n')}
     </tbody></table>`;
   },
-  start() {
-    _.times(SIZE, CCycleLetter);
+  cycle(ind) {
+    if (concurrent.continue) {
+      console.log("concurrent", ind);
+
+      const toFind = CREOENTODOS[ind];
+      const letter = _.sample(LETTERS);
+      const found = toFind == letter;
+      const time = found ? 2000 : 150;
+
+      CUnmarkFound(ind);
+      Cid$(ind).text(letter);
+
+      if (found) {
+        CMarkFound(ind);
+      }
+
+      concurrent.timeoutID[ind] = setTimeout(concurrent.cycle, time, ind);
+    }
   },
-  running : _.times(SIZE, _.constant(false))
+  start() {
+    concurrent.continue = true;
+    _.times(SIZE, concurrent.cycle);
+  },
+  stop() {
+    concurrent.continue = false;
+    _.map(concurrent.timeoutID, clearTimeout);
+  }
 }
 
 function Cid$(id) {
@@ -31,32 +55,10 @@ function CUnmarkFound(ind) {
   Cid$(ind).removeClass('C-found');
 }
 
-function CCycleLetter(ind) {
-  console.log("concurrent", ind);
-  const toFind = CREOENTODOS[ind];
-  const letter = _.sample(LETTERS);
-  let time = 150;
-
-  CUnmarkFound(ind);
-  Cid$(ind).text(letter);
-
-  if (toFind == letter) {
-    CMarkFound(ind);
-    time = 2000;
-  }
-
-  if (concurrent.continue) {
-    setTimeout(function() {
-      CCycleLetter(ind);
-    }, time);
-  }
-}
-
 swpr.on('slideChangeStart', function (a) {
   if (a.realIndex == INDEX_CONCURRENT) {
-    concurrent.continue = true;
     concurrent.start();
   } else {
-    concurrent.continue = false;
+    concurrent.stop();
   }
 });
