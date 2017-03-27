@@ -27,7 +27,7 @@ const hangman = {
 
       const toFind = CREOENTODOS[hangman.index];
       const letter = _.sample(LETTERS);
-      let time = 150;
+      let time = 75;
 
       Hid$(hangman.index).text(letter);
 
