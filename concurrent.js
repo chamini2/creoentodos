@@ -22,7 +22,7 @@ const concurrent = {
       const toFind = CREOENTODOS[ind];
       const letter = _.sample(LETTERS);
       const found = toFind == letter;
-      const time = found ? 2000 : 400;
+      const time = found ? 2000 : 75;
 
       CUnmarkFound(ind);
       Cid$(ind).text(letter);
