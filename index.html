@@ -12,87 +12,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/css/swiper.min.css">
   </head>
   <body>
-    <!-- Slider main container -->
-    <div class="swiper-container">
-      <!-- Additional required wrapper -->
-      <div class="swiper-wrapper">
-          <!-- Slides -->
-          <div class="swiper-slide">
-            <h1>Sopa de letras permisiva</h1>
-            <div class="content" id="wordsearch-any"></div>
-          </div>
-          <div class="swiper-slide">
-            <h1>Sopa de letras permisiva envolvente</h1>
-            <div class="content" id="wordsearch-wrap"></div>
-          </div>
-          <div class="swiper-slide">
-            <h1>Sopa de letras prohibitiva</h1>
-            <div class="content" id="wordsearch-continued"></div>
-          </div>
-          <div class="swiper-slide">
-            <h1>El ahorcado</h1>
-            <div class="content" id="hangman"></div>
-          </div>
-          <div class="swiper-slide">
-            <h1>Concurrente</h1>
-            <div class="content" id="concurrent"></div>
-          </div>
-          <div class="swiper-slide">
-            <h1>Lista contraria</h1>
-            <div class="content" id="list"></div>
-          </div>
-          <div class="swiper-slide">
-            <h1>Intercambio</h1>
-            <div class="content" id="swap"></div>
-          </div>
-      </div>
-
-      <!-- If we need pagination -->
-      <!--<div class="swiper-pagination"></div>-->
-
-      <!-- If we need navigation buttons -->
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-
-      <!-- If we need scrollbar -->
-      <!--<div class="swiper-scrollbar"></div>-->
-    </div>
+    <ul id="softwares">
+      <li>
+        <a href="/wordsearch/any">Sopa de letras permisiva</a>
+      </li>
+      <li>
+        <a href="/wordsearch/wrap">Sopa de letras permisiva envolvente</a>
+      </li>
+      <li>
+        <a href="/wordsearch/continued">Sopa de letras prohibitiva</a>
+      </li>
+      <li>
+        <a href="/hangman">El ahorcado</a>
+      </li>
+      <li>
+        <a href="/concurrent">Concurrente</a>
+      </li>
+      <li>
+        <a href="/list">Lista contraria</a>
+      </li>
+      <li>
+        <a href="/swap">Intercambio</a>
+      </li>
+    </ul>
 
     <p id="authors">
       <span>Concebido por Javier Grajales</span>
       <span>Desarrollado por Matteo Ferrando</span>
     </p>
-
-    <script src="https://cdn.jsdelivr.net/bluebird/3.5.0/bluebird.min.js" charset="utf-8"></script>
-    <script src="https://cdn.jsdelivr.net/lodash/4.16.4/lodash.min.js" charset="utf-8"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" charset="utf-8"></script>
-    <!-- swiper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.1/js/swiper.min.js"></script>
-    <script>
-      var swpr = new Swiper('.swiper-container', {
-        // Optional parameters
-        direction: 'horizontal',
-        // loop: true,
-
-        // control with arrows
-        keyboardControl: true,
-
-        // If we need pagination
-        // pagination: '.swiper-pagination',
-        paginationClickable: false,
-
-        // Navigation arrows
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev',
-
-        // And if we need scrollbar
-        // scrollbar: '.swiper-scrollbar',
-      });
-      var INDEX_HANGMAN = 3;
-      var INDEX_CONCURRENT = 4;
-      var INDEX_LIST = 5;
-      var INDEX_SWAP = 6;
-    </script>
-    <script src="index.min.js" charset="utf-8"></script>
   </body>
 </html>
