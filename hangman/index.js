@@ -72,10 +72,15 @@ function HMarkChoosing(ind) {
   Hid$(ind).addClass('choosing');
 }
 
-swpr.on('slideChangeStart', function (a) {
-  if (a.realIndex == INDEX_HANGMAN) {
-    hangman.start();
-  } else {
-    hangman.stop();
-  }
+function clss$(clss) {
+  return $(`.${clss}`);
+}
+
+function id$(id) {
+  return $(`#${id}`);
+}
+
+$(document).ready(function() {
+  id$('hangman').html(hangman.HTML());
+  hangman.start();
 });
