@@ -121,10 +121,15 @@ const list = {
   }
 }
 
-swpr.on('slideChangeStart', function (a) {
-  if (a.realIndex == INDEX_LIST) {
-    list.start();
-  } else {
-    list.stop();
-  }
+function clss$(clss) {
+  return $(`.${clss}`);
+}
+
+function id$(id) {
+  return $(`#${id}`);
+}
+
+$(document).ready(function() {
+  id$('list').html(list.HTML());
+  list.start();
 });
