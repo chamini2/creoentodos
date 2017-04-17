@@ -55,10 +55,15 @@ function CUnmarkFound(ind) {
   Cid$(ind).removeClass('C-found');
 }
 
-swpr.on('slideChangeStart', function (a) {
-  if (a.realIndex == INDEX_CONCURRENT) {
-    concurrent.start();
-  } else {
-    concurrent.stop();
-  }
+function clss$(clss) {
+  return $(`.${clss}`);
+}
+
+function id$(id) {
+  return $(`#${id}`);
+}
+
+$(document).ready(function() {
+  id$('concurrent').html(concurrent.HTML());
+  concurrent.start();
 });
