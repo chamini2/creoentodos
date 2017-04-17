@@ -1,15 +1,15 @@
 html, body {
-    margin: 0;
-    height: 100%;
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    background-color: black;
-    color: white;
+  margin: 0;
+  height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: black;
+  color: white;
 }
 
 body{
-    margin: auto;
-    position: relative;
-    max-width: 1000px;
+  margin: auto;
+  position: relative;
+  max-width: 1000px;
 }
 
 a {
@@ -29,7 +29,7 @@ a {
   justify-content: center;
   flex-direction: column;
 
-  font-size: 1.5em;
+  font-size: 2.5vmin;
 }
 
 #softwares li {
