@@ -79,10 +79,15 @@ const swap = {
   }
 }
 
-swpr.on('slideChangeStart', function (a) {
-  if (a.realIndex == INDEX_SWAP) {
-    swap.start();
-  } else {
-    swap.stop();
-  }
+function clss$(clss) {
+  return $(`.${clss}`);
+}
+
+function id$(id) {
+  return $(`#${id}`);
+}
+
+$(document).ready(function() {
+  id$('swap').html(swap.HTML());
+  swap.start();
 });
