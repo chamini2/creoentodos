@@ -1,3 +1,5 @@
+navigator.serviceWorker.register('../service-worker.js');
+
 $(document).ready(function() {
   const type = 'continued';
   const name = `wordsearch-${type}`;
