@@ -1,6 +1,6 @@
 // navigator.serviceWorker.register('../service-worker.js');
 
-const CREOENTODOS = "CREOENTODOS";
+const CREOENTODOS = "CREER";
 const SIZE = _.size(CREOENTODOS);
 const LETTERS ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

@@ -35,12 +35,6 @@ const starts = [
   'No habías creído',
   'No habíamos creído',
   'No habían creído',
-  'No hube creído',
-  'No hubiste creído',
-  'No hubo creído',
-  'No hubimos creído',
-  'No hubieron creído',
-  'No habré creído',
   'No habré creído',
   'No habrás creído',
   'No habrá creído',
@@ -78,16 +72,25 @@ const starts = [
   'No creamos',
   'No crean',
   'No creyendo',
-  'Habiendo no creído',
   'No haber creído'
 ];
+
+const padding = queryParams.get('padding') != null
+
+const startsPad = _.max(_.map(starts, (s) => s.length))
+const endingsPad = _.max(_.map(endings, (s) => s.length))
+const stringPad = padding ? _.max([startsPad, endingsPad]) : 0
+
+function buildString(sta, end) {
+  return `${_.padStart(sta, stringPad)} en ${_.padEnd(end, stringPad)}`;
+}
 
 const list = {
   continue : false,
   index : -1,
-  phrases : _.flatMap(starts, (sta) => _.map(endings, (end) => `${sta} en ${end}`)),
+  phrases : _.flatMap(starts, (sta) => _.map(endings, (end) => buildString(sta, end))),
   HTML() {
-    return `<div id="list-row"></div>`;
+    return `<pre id="list-row"></pre>`;
   },
   show(phrase) {
     id$('list-row').text(phrase);
