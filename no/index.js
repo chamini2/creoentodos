@@ -123,14 +123,6 @@ const list = {
   }
 }
 
-function clss$(clss) {
-  return $(`.${clss}`);
-}
-
-function id$(id) {
-  return $(`#${id}`);
-}
-
 $(document).ready(function() {
   id$('list').html(list.HTML());
   list.start();

@@ -271,11 +271,3 @@ function wordsearch(type, name) {
   setTimeout(() => workIt(matrix), 1000);
 
 }
-
-function clss$(clss) {
-  return $(`.${clss}`);
-}
-
-function id$(id) {
-  return $(`#${id}`);
-}
