@@ -1,4 +1,4 @@
-navigator.serviceWorker.register('../service-worker.js');
+// navigator.serviceWorker.register('../service-worker.js');
 
 const endings = ['nadie', 'mí', 'ti', 'él', 'nosotros', 'ustedes', 'ellos'];
 const starts = [

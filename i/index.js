@@ -1,4 +1,4 @@
-navigator.serviceWorker.register('../service-worker.js');
+// navigator.serviceWorker.register('../service-worker.js');
 
 $(document).ready(function() {
   const type = 'any';
