@@ -30,8 +30,8 @@
 }
 
 .matrix td {
-  font-size: 4vmin;
-  width: 5vmin;
-  height: 5vmin;
+  font-size: 2em;
+  width: 1.5em;
+  height: 1.5em;
   text-align: center;
 }

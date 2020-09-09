@@ -5,9 +5,10 @@
 }
 
 #swap-row td {
-  font-size: 4vmin;
-  width: 5vmin;
-  height: 5vmin;
+  font-size: 3em;
+  width: 1.5em;
+  height: 1.5em;
+  text-align: center;
   color: #bbbbbb;
 }
 
