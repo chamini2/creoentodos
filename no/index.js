@@ -1,6 +1,21 @@
 // navigator.serviceWorker.register('../service-worker.js');
 
-const endings = ['nadie', 'mí', 'ti', 'él', 'nosotros', 'ustedes', 'ellos'];
+const endings = [
+  'nadie',
+  'mí',
+  'ti',
+  'él',
+  'ella',
+  'elle',
+  'nosotros',
+  'nosotras',
+  'nosotres',
+  'ustedes',
+  'ellos',
+  'ellas',
+  'elles'
+];
+
 const starts = [
   'No creo',
   'No creer',
@@ -86,9 +101,9 @@ function buildString(sta, end) {
 }
 
 const list = {
-  continue : false,
-  index : -1,
-  phrases : _.flatMap(starts, (sta) => _.map(endings, (end) => buildString(sta, end))),
+  continue: false,
+  index: -1,
+  phrases: _.flatMap(starts, (sta) => _.map(endings, (end) => buildString(sta, end))),
   HTML() {
     return `<pre id="list-row"></pre>`;
   },
@@ -111,7 +126,7 @@ const list = {
     }
   },
   start() {
-    if (! list.initialized) {
+    if (!list.initialized) {
       // initialize it with something
       list.show(_.sample(list.phrases));
       list.initialized = true;
@@ -126,7 +141,7 @@ const list = {
   }
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   id$('list').html(list.HTML());
   list.start();
 });
